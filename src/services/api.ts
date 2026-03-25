@@ -8,6 +8,6 @@ const api = axios.create({
 });
 
 export const analyzeStock = async (query: string) => {
-  const response = await api.post('/analyze', { query });
+  const response = await api.post('/api/analyze', { query });
   return response.data.result;
 };
