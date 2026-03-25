@@ -7,7 +7,16 @@ const api = axios.create({
   },
 });
 
+// Generate a unique session ID when the app loads so the agent remembers the history perfectly
+// for the duration of this specific browser tab, without colliding with old corrupted threads!
+const sessionId = typeof crypto !== 'undefined' && crypto.randomUUID
+  ? crypto.randomUUID()
+  : `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
 export const analyzeStock = async (query: string) => {
-  const response = await api.post('/api/analyze', { query });
+  const response = await api.post('/api/analyze', { 
+    query: query,
+    thread_id: sessionId
+  });
   return response.data.result;
 };
