@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
 import InputBox from '../components/InputBox';
@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import ResultCard from '../components/ResultCard';
 import { analyzeStock } from '../services/api';
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

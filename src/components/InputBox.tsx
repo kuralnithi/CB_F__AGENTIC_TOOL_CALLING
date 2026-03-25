@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FC, type FormEvent } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
 import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -8,10 +8,10 @@ interface Props {
   isLoading: boolean;
 }
 
-const InputBox: React.FC<Props> = ({ onAnalyze, isLoading }) => {
+const InputBox: FC<Props> = ({ onAnalyze, isLoading }) => {
   const [query, setQuery] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (query.trim() && !isLoading) {
       onAnalyze(query.trim());

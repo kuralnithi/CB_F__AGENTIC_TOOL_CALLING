@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { motion } from 'framer-motion';
 
 interface Props {
   content: string;
 }
 
-const ResultCard: React.FC<Props> = ({ content }) => {
+const ResultCard: FC<Props> = ({ content }) => {
   const [displayedContent, setDisplayedContent] = useState('');
 
   // Typing effect

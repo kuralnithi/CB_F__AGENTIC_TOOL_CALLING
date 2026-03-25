@@ -1,12 +1,12 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { motion } from 'framer-motion';
 
-const Loader: React.FC = () => {
+const Loader = () => {
   return (
     <div className="loader-container d-flex flex-column align-items-center justify-content-center py-5 h-100">
       <div className="flow-diagram d-flex align-items-center gap-2 flex-wrap justify-content-center">
         {['Input', 'Tools', 'LLM', 'Output'].map((step, index) => (
-          <React.Fragment key={step}>
+          <Fragment key={step}>
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -25,7 +25,7 @@ const Loader: React.FC = () => {
                 style={{ height: 2, filter: 'drop-shadow(0 0 5px rgba(59, 130, 246, 0.5))' }}
               />
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </div>
       <motion.p 
