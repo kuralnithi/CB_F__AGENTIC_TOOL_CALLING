@@ -1,29 +1,31 @@
-import { useState, type FC } from 'react';
+import { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { useUser } from '@clerk/clerk-react';
 import InputBox from '../components/InputBox';
 import Loader from '../components/Loader';
 import ResultCard from '../components/ResultCard';
-import { analyzeStock } from '../services/api';
+import { useAnalyzeStock } from '../api/useAnalyze';
+import { openAuthModal } from '../store/slices/uiSlice';
 
 const Home: FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const mutation = useAnalyzeStock();
+  const { isSignedIn, isLoaded } = useUser();
+  const dispatch = useDispatch();
 
-  const handleAnalyze = async (query: string) => {
-    setIsLoading(true);
-    setError(null);
-    setResult(null);
-    try {
-      const data = await analyzeStock(query);
-      setResult(data);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || err.message || 'An error occurred during analysis');
-    } finally {
-      setIsLoading(false);
+  const handleAnalyze = (query: string) => {
+    if (isLoaded && !isSignedIn) {
+      // Require the user to sign in before allowing analysis
+      dispatch(openAuthModal());
+      return;
     }
+    mutation.mutate({ query });
   };
+
+  const isLoading = mutation.isPending;
+  const result = mutation.data;
+  const errorMsg = mutation.error ? (mutation.error as any).response?.data?.detail || mutation.error.message : null;
 
   return (
     <Container className="py-5 min-vh-100 d-flex flex-column justify-content-center">
@@ -55,18 +57,18 @@ const Home: FC = () => {
                  <ResultCard content={result} />
                </motion.div>
             )}
-            {!isLoading && !result && !error && (
+            {!isLoading && !result && !errorMsg && (
               <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-100 d-flex flex-column align-items-center justify-content-center glass-panel rounded-4 p-4 text-center opacity-75 border-dashed">
                 <div className="text-secondary mb-3" style={{ fontSize: '3rem' }}>📈</div>
                 <h4 className="text-secondary fw-semibold">Awaiting Request</h4>
                 <p className="text-muted small">Enter an asset on the left to begin the autonomous LLM pipeline execution.</p>
               </motion.div>
             )}
-            {!isLoading && error && (
+            {!isLoading && errorMsg && (
               <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-100 d-flex flex-column align-items-center justify-content-center border border-danger border-opacity-50 rounded-4 p-4 text-center" style={{ background: 'rgba(239, 68, 68, 0.05)', backdropFilter: 'blur(10px)' }}>
                 <div className="text-danger mb-3" style={{ fontSize: '3rem' }}>⚠️</div>
                 <h4 className="text-danger fw-semibold">Analysis Failed</h4>
-                <p className="text-danger opacity-75 small">{error}</p>
+                <p className="text-danger opacity-75 small">{errorMsg}</p>
               </motion.div>
             )}
           </AnimatePresence>
