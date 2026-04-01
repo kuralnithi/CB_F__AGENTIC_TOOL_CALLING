@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f172a;
+  color: #e2e8f0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-panel {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.input-group-custom:focus-within {
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+}
+
+.search-input::placeholder {
+  color: #64748b;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.flow-node {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 0, 0.1);
+}
+
+.border-dashed {
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+}
+
+.hover-bg-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.result-content {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+
+.result-content::-webkit-scrollbar {
+  width: 6px;
+}
+.result-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.result-content::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
